@@ -1,43 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../styles/NotificationManager.css";
+
+const API_URL = "http://localhost:5000/api/notifications"; // Updated API URL
 
 const NotificationManager = () => {
   const [notifications, setNotifications] = useState([]);
   const [selectedAudience, setSelectedAudience] = useState("");
   const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingId, setEditingId] = useState(null);
 
-  const handleCreateOrUpdate = () => {
+  // Fetch Notifications on Component Mount
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get(API_URL);
+      setNotifications(response.data);
+    } catch (error) {
+      console.error("Error fetching notifications:", error.message);
+      alert("Failed to fetch notifications. Please check the server.");
+    }
+  };
+
+  const handleCreateOrUpdate = async () => {
     if (!selectedAudience || !message) {
       alert("Please fill out all fields before submitting.");
       return;
     }
 
-    if (isEditing) {
-      const updatedNotifications = [...notifications];
-      updatedNotifications[editingIndex] = { audience: selectedAudience, message };
-      setNotifications(updatedNotifications);
-      setIsEditing(false);
-      setEditingIndex(null);
-    } else {
-      setNotifications([...notifications, { audience: selectedAudience, message }]);
+    try {
+      if (isEditing) {
+        // Update Notification
+        const updatedNotification = { audience: selectedAudience, message };
+        await axios.put(`${API_URL}/${editingId}`, updatedNotification);
+        alert("Notification updated successfully!");
+      } else {
+        // Create New Notification
+        const newNotification = { audience: selectedAudience, message };
+        await axios.post(API_URL, newNotification);
+        alert("Notification added successfully!");
+      }
+
+      fetchNotifications();
+      resetForm();
+    } catch (error) {
+      console.error("Error creating/updating notification:", error.message);
+      alert("Failed to save notification. Please try again.");
     }
-
-    setSelectedAudience("");
-    setMessage("");
   };
 
-  const handleEdit = (index) => {
-    setSelectedAudience(notifications[index].audience);
-    setMessage(notifications[index].message);
+  const handleEdit = (id) => {
+    const notification = notifications.find((n) => n._id === id);
+    setSelectedAudience(notification.audience);
+    setMessage(notification.message);
     setIsEditing(true);
-    setEditingIndex(index);
+    setEditingId(id);
   };
 
-  const handleDelete = (index) => {
-    const updatedNotifications = notifications.filter((_, i) => i !== index);
-    setNotifications(updatedNotifications);
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      alert("Notification deleted successfully!");
+      fetchNotifications();
+    } catch (error) {
+      console.error("Error deleting notification:", error.message);
+      alert("Failed to delete notification. Please try again.");
+    }
   };
 
   const handleSendNotification = () => {
@@ -46,9 +78,15 @@ const NotificationManager = () => {
       return;
     }
 
-    // Logic for sending notification (e.g., API call)
-    console.log("Sending notifications...");
+    console.log("Sending notifications:", notifications);
     alert("Notifications sent successfully!");
+  };
+
+  const resetForm = () => {
+    setSelectedAudience("");
+    setMessage("");
+    setIsEditing(false);
+    setEditingId(null);
   };
 
   return (
@@ -104,20 +142,20 @@ const NotificationManager = () => {
               </tr>
             </thead>
             <tbody>
-              {notifications.map((notification, index) => (
-                <tr key={index}>
+              {notifications.map((notification) => (
+                <tr key={notification._id}>
                   <td>{notification.audience}</td>
                   <td>{notification.message}</td>
                   <td>
                     <button
                       className="edit-btn"
-                      onClick={() => handleEdit(index)}
+                      onClick={() => handleEdit(notification._id)}
                     >
                       Edit
                     </button>
                     <button
                       className="delete-btn"
-                      onClick={() => handleDelete(index)}
+                      onClick={() => handleDelete(notification._id)}
                     >
                       Delete
                     </button>

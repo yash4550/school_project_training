@@ -3,10 +3,6 @@
     padding: 24px;
   }
   
-  .max-w-4xl {
-    max-width: 960px;
-    margin: 0 auto;
-  }
   
   .mx-auto {
     margin-left: auto;
@@ -26,6 +22,7 @@
   .mb-4 {
     margin-bottom: 16px;
   }
+
   
   /* Button Styling */
   .bg-blue-500 {
@@ -130,6 +127,14 @@
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 12px;
+    transition: all 0.2s ease-in-out;
+  }
+  input[type = "search"] {
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 20%;
+    box-sizing: border-box;
     transition: all 0.2s ease-in-out;
   }
   
