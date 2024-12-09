@@ -1,19 +1,18 @@
 import React from "react";
 import "../styles/Navbar.css";
+import { FaBell, FaUserCircle, FaBars } from "react-icons/fa";
 
 const Navbar = ({ toggleSidebar }) => {
   return (
     <div className="navbar">
       <div className="navbar-left">
         <button className="menu-toggle" onClick={toggleSidebar}>
-          ☰
+          <FaBars className="menu-icon" />
         </button>
       </div>
       <div className="navbar-right">
-        <button>App Store</button>
-        <button>Google Play</button>
-        <span className="notifications">🔔</span>
-        <span className="profile">👤</span>
+        <FaBell className="icon" />
+        <FaUserCircle className="icon" />
       </div>
     </div>
   );

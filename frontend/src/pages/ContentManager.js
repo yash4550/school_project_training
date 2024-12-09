@@ -2,9 +2,7 @@ import React from 'react'
 
 function ContentManager() {
   return (
-    <div>
-      
-    </div>
+    <div>ContentManager</div>
   )
 }
 

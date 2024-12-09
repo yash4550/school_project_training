@@ -70,6 +70,48 @@
   width: calc(100% - 250px); /* Subtract sidebar width */
 }
 
+/* General Sidebar Icon Styles */
+.sidebar-icon {
+  font-size: 1.8rem; /* Adjust the size of the icons */
+  color: #4a5568; /* Base color */
+  margin-right: 8px; /* Space between icon and text */
+  cursor: pointer; /* Pointer on hover */
+  transition: color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.sidebar-icon:hover {
+  color: #2b6cb0; /* Change color on hover */
+  transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Dropdown Items with Icons */
+.drop-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  text-decoration: none;
+  font-size: 1rem;
+  color: #4a5568; /* Text and icon color */
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.drop-item:hover {
+  background-color: #edf2f7; /* Light gray background on hover */
+  color: #2b6cb0; /* Change text and icon color */
+}
+
+/* Specific Icon Styling within Dropdown */
+.drop-item svg {
+  font-size: 1.5rem; /* Set a specific size for dropdown icons */
+  margin-right: 8px; /* Space between icon and text */
+}
+
+.drop-item svg:hover {
+  color: #2c5282; /* Darker hover color for icons */
+}
+
+
 @media (max-width: 768px) {
   .content-container {
     margin-left: 200px; /* Sidebar width on smaller screens */

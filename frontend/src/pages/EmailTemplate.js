@@ -2,9 +2,7 @@ import React from 'react'
 
 function EmailTemplate() {
   return (
-    <div>
-      
-    </div>
+    <div>EmailTemplate</div>
   )
 }
 

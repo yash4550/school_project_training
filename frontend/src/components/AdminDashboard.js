@@ -11,14 +11,28 @@ const Dashboard = () => {
       <div className="main-content">
         <Navbar />
         <div className="dashboard-content">
-          <Cards />
-          {/* Add other sections here */}
+          {/* Overview Cards */}
+          <div className="cards-section">
+            <Cards />
+          </div>
+
+          {/* Statistics Section */}
           <div className="statistics-section">
             <h3>Statistics</h3>
             <div className="statistics-graph">
-              {/* Placeholder for graph */}
-              <p>Graph placeholder (use a chart library like Chart.js here)</p>
+              <p>Graph placeholder (use a chart library like Chart.js or Recharts)</p>
             </div>
+          </div>
+
+          {/* Recent Activities Section */}
+          <div className="activities-section">
+            <h3>Recent Activities</h3>
+            <ul className="activities-list">
+              <li>New school added: St. Paul's High School</li>
+              <li>5 new parents registered today</li>
+              <li>Notification sent to all users</li>
+              <li>Fee reminder email dispatched</li>
+            </ul>
           </div>
         </div>
       </div>
