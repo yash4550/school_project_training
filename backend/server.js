@@ -7,6 +7,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const schoolRoutes = require("./routes/schoolRoutes");
 const notificationRoutes = require('./routes/notificationRoutes');
+const parentRoutes = require('./routes/parentRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +26,7 @@ mongoose
 app.use("/api", authRoutes);
 app.use("/api", schoolRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use("/api", parentRoutes );
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

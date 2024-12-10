@@ -16,17 +16,37 @@ const ParentsManager = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setParents([...parents, formData]);
+    const schoolName = formData.school; // Get the school name from the form
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/parents?school=${schoolName}`);
+      if (response.ok) {
+        const data = await response.json();
+        setParents(data); // Update the table with fetched data
+        alert("Parents data fetched successfully!");
+      } else {
+        alert("Failed to fetch parents data. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error fetching parents data:", error);
+      alert("An error occurred while fetching data.");
+    }
+
+    // Clear the form after submission
     setFormData({
       school: "",
-      parentName: "",
+      name: "",
       email: "",
       phone: "",
-      childName: "",
-      childClass: "",
+      Childname: "",
+      className: "",
+      number: "",
     });
+
+    // Close the modal
+    document.getElementById("parentModal").classList.add("hidden");
   };
 
   return (
@@ -44,7 +64,6 @@ const ParentsManager = () => {
       <table className="table-auto border w-full mt-6">
         <thead>
           <tr>
-            <th className="border px-4 py-2">School</th>
             <th className="border px-4 py-2">Parent Name</th>
             <th className="border px-4 py-2">Email</th>
             <th className="border px-4 py-2">Phone</th>
@@ -56,18 +75,18 @@ const ParentsManager = () => {
           {parents.length > 0 ? (
             parents.map((parent, index) => (
               <tr key={index}>
-                <td className="border px-4 py-2">{parent.school}</td>
-                <td className="border px-4 py-2">{parent.parentName}</td>
+                
+                <td className="border px-4 py-2">{parent.name}</td>
                 <td className="border px-4 py-2">{parent.email}</td>
-                <td className="border px-4 py-2">{parent.phone}</td>
-                <td className="border px-4 py-2">{parent.childName}</td>
-                <td className="border px-4 py-2">{parent.childClass}</td>
+                <td className="border px-4 py-2">{parent.number}</td>
+                <td className="border px-4 py-2">{parent.Childname}</td>
+                <td className="border px-4 py-2">{parent.className}</td>
               </tr>
             ))
           ) : (
             <tr>
               <td colSpan="6" className="text-center py-4">
-                No parents added yet.
+                No parents data available. Please submit a school name.
               </td>
             </tr>
           )}
@@ -82,64 +101,19 @@ const ParentsManager = () => {
             <input
               type="text"
               name="school"
-              placeholder="Connected to School"
+              placeholder="Enter School Name"
               value={formData.school}
               onChange={handleChange}
               required
               className="mb-4"
             />
-            <input
-              type="text"
-              name="parentName"
-              placeholder="Parent Name"
-              value={formData.parentName}
-              onChange={handleChange}
-              required
-              className="mb-4"
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="mb-4"
-            />
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone Number"
-              value={formData.phone}
-              maxLength="10"
-              onChange={handleChange}
-              required
-              className="mb-4"
-            />
-            <input
-              type="text"
-              name="childName"
-              placeholder="Child Name"
-              value={formData.childName}
-              onChange={handleChange}
-              required
-              className="mb-4"
-            />
-            <input
-              type="text"
-              name="childClass"
-              placeholder="Class"
-              value={formData.childClass}
-              onChange={handleChange}
-              required
-              className="mb-4"
-            />
+            {/* Other fields are optional for now since the focus is on fetching */}
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full">
               Submit
             </button>
             <button
               type="button"
-              onClick={() => document.getElementById("parentModal").classList.add("hidden")}
+              onClick={() => console.log("parentModal").classList.add("hidden")}
               className="bg-red-500 text-white px-4 py-2 rounded w-full mt-4"
             >
               Cancel
